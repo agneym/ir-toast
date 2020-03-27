@@ -1,20 +1,28 @@
-import React, { createContext, useContext, FC, useCallback, useMemo, useState, useRef } from "react";
-import { ToastOptions, IonToast } from "@ionic/react";
-import { ReactControllerProps } from "@ionic/react/dist/types/components/createControllerComponent";
+import React, {
+  createContext,
+  useContext,
+  FC,
+  useCallback,
+  useMemo,
+  useState,
+  useRef,
+} from 'react';
+import { ToastOptions, IonToast } from '@ionic/react';
+import { ReactControllerProps } from '@ionic/react/dist/types/components/createControllerComponent';
 
 type ReactToastOptions = ToastOptions & Partial<ReactControllerProps>;
 
 type ToastInstance = {
   present: (options?: ReactToastOptions) => void;
   dismiss: () => void;
-}
+};
 
 type ToastProviderOptions = {
   create: (options: ReactToastOptions) => ToastInstance;
   success: (message: string) => ToastInstance;
   error: (message: string) => ToastInstance;
   warning: (message: string) => ToastInstance;
-}
+};
 
 const ToastContext = createContext<ToastProviderOptions | null>(null);
 const { Provider } = ToastContext;
@@ -30,37 +38,42 @@ export const ToastProvider: FC<Props> = ({ value, children }) => {
   const [options, setOptions] = useState<ReactToastOptions>();
   const ref = useRef<HTMLIonToastElement | null>(null);
 
-  const create = useCallback((options: ReactToastOptions) => {
-    setIsOpen(true);
+  const create = useCallback(
+    (options: ReactToastOptions) => {
+      setIsOpen(true);
 
-    const present = (options: ReactToastOptions) => () => {
-      setOptions({
-        ...value,
-        ...options,
-      });
-    }
+      const present = (options: ReactToastOptions) => () => {
+        setOptions({
+          ...value,
+          ...options,
+        });
+      };
 
-    const dismiss = () => {
-      ref.current?.dismiss();
-    }
+      const dismiss = () => {
+        ref.current?.dismiss();
+      };
 
-    return {
-      present: present(options),
-      dismiss,
-    }
-  }, [value]);
+      return {
+        present: present(options),
+        dismiss,
+      };
+    },
+    [value]
+  );
 
   const contextValue = useMemo(() => {
-    const translateToOptions = (color: 'success' | 'warning' | 'danger') => (message: string) => {
+    const translateToOptions = (color: 'success' | 'warning' | 'danger') => (
+      message: string
+    ) => {
       return create({ message, color });
-    }
+    };
 
     return {
       create,
       success: translateToOptions('success'),
       error: translateToOptions('danger'),
       warning: translateToOptions('warning'),
-    }
+    };
   }, [create]);
 
   return (
@@ -73,5 +86,5 @@ export const ToastProvider: FC<Props> = ({ value, children }) => {
         {...options}
       />
     </Provider>
-  )
-}
+  );
+};

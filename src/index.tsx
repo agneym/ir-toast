@@ -1,6 +1,3 @@
-import { ToastProvider, useToast } from "./useToast";
+import { ToastProvider, useToast } from './useToast';
 
-export {
-  ToastProvider,
-  useToast,
-}
+export { ToastProvider, useToast };
