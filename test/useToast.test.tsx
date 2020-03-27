@@ -1,8 +1,11 @@
 import * as React from 'react';
-import { ToastProvider } from '..';
-
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
+import { mockIonicReact } from '@ionic/react-test-utils';
+
+import { ToastProvider } from '..';
+
+mockIonicReact();
 
 describe('it', () => {
   it('renders children passed to it', () => {
