@@ -55,5 +55,24 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "keywords": [
+    "ionic",
+    "react",
+    "toast",
+    "javascript",
+    "ionic5"
+  ],
+  "jest": {
+    "globals": {
+      "__DEV__": true
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/agneym/ir-toast"
+  },
+  "bugs": {
+    "url": "https://github.com/agneym/ir-toast/issues"
   }
 }
