@@ -1,5 +1,6 @@
 {
   "name": "@agney/ir-toast",
+  "description": "Enables the use of imperative Toasts as in Angular",
   "author": "Agney Menon <agney@outlook.in>",
   "version": "0.0.1",
   "license": "MIT",
@@ -45,7 +46,7 @@
     "@types/react": "^16.9.26",
     "@types/react-dom": "^16.9.5",
     "husky": "^4.2.3",
-    "np": "^5",
+    "np": "^6.2.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-test-renderer": "^16.13.1",
