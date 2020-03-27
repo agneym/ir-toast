@@ -65,7 +65,9 @@ export const ToastProvider: FC<Props> = ({ value, children }) => {
     const translateToOptions = (color: 'success' | 'warning' | 'danger') => (
       message: string
     ) => {
-      return create({ message, color });
+      const toast = create({ message, color });
+      toast.present();
+      return toast;
     };
 
     return {
