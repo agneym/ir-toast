@@ -3,9 +3,9 @@ import React, {
   useContext,
   FC,
   useCallback,
+  useEffect,
   useMemo,
   useState,
-  useRef,
 } from 'react';
 import { ToastOptions, IonToast } from '@ionic/react';
 import { ReactControllerProps } from '@ionic/react/dist/types/components/createControllerComponent';
@@ -15,6 +15,12 @@ type ReactToastOptions = ToastOptions & Partial<ReactControllerProps>;
 type ToastInstance = {
   present: (options?: ReactToastOptions) => void;
   dismiss: () => void;
+};
+
+type ToastObject = {
+  ref: HTMLIonToastElement | null;
+  isOpen: boolean;
+  options: ReactToastOptions;
 };
 
 type ToastProviderOptions = {
@@ -34,23 +40,38 @@ interface Props {
 export const useToast = () => useContext(ToastContext) as ToastProviderOptions;
 
 export const ToastProvider: FC<Props> = ({ value, children }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [options, setOptions] = useState<ReactToastOptions>();
-  const ref = useRef<HTMLIonToastElement | null>(null);
+  const [toasts, setToasts] = useState([] as ToastObject[]);
 
   const create = useCallback(
     (options: ReactToastOptions) => {
-
       const present = (options: ReactToastOptions) => () => {
-        setOptions({
-          ...value,
-          ...options,
-        });
-        setIsOpen(true);
+        // don't display another toast if a matching message is already displayed
+        if (
+          toasts.filter((toast) => toast.options.message === options.message)
+            .length > 0
+        ) {
+          return;
+        }
+
+        const newToast: ToastObject = {
+          ref: null,
+          options: {
+            ...value,
+            ...options,
+          },
+          isOpen: true,
+        };
+
+        setToasts([...toasts, newToast]);
       };
 
       const dismiss = () => {
-        ref.current?.dismiss();
+        // actually dismisses ALL
+        setToasts(
+          toasts.map((toast) => {
+            return { ...toast, isOpen: false };
+          })
+        );
       };
 
       return {
@@ -58,8 +79,18 @@ export const ToastProvider: FC<Props> = ({ value, children }) => {
         dismiss,
       };
     },
-    [value]
+    [toasts, value]
   );
+
+  useEffect(() => {
+    // clear all toasts if none of them are visible.
+    if (toasts.length > 0) {
+      const openToasts = toasts.filter((toast) => toast.isOpen);
+      if (openToasts.length < 1) {
+        setToasts([]);
+      }
+    }
+  }, [toasts]);
 
   const contextValue = useMemo(() => {
     const translateToOptions = (color: 'success' | 'warning' | 'danger') => (
@@ -78,15 +109,25 @@ export const ToastProvider: FC<Props> = ({ value, children }) => {
     };
   }, [create]);
 
+  const hideToast = (index: number) => {
+    setToasts([
+      ...toasts.map((toast, i) =>
+        i === index ? { ...toast, isOpen: false } : toast
+      ),
+    ]);
+  };
+
   return (
     <Provider value={contextValue}>
       {children}
-      <IonToast
-        ref={ref}
-        isOpen={isOpen}
-        onDidDismiss={() => setIsOpen(false)}
-        {...options}
-      />
+      {toasts.map((toast, i) => (
+        <IonToast
+          ref={(ref) => (toasts[i].ref = ref)}
+          isOpen={toast.isOpen}
+          onDidDismiss={() => hideToast(i)}
+          {...toast.options}
+        />
+      ))}
     </Provider>
   );
 };
