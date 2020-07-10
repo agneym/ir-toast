@@ -122,6 +122,7 @@ export const ToastProvider: FC<Props> = ({ value, children }) => {
       {children}
       {toasts.map((toast, i) => (
         <IonToast
+          key={i}
           ref={(ref) => (toasts[i].ref = ref)}
           isOpen={toast.isOpen}
           onDidDismiss={() => hideToast(i)}
