@@ -40,7 +40,6 @@ export const ToastProvider: FC<Props> = ({ value, children }) => {
 
   const create = useCallback(
     (options: ReactToastOptions) => {
-
       const present = (options: ReactToastOptions) => () => {
         setOptions({
           ...value,
