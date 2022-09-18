@@ -2,6 +2,7 @@ import React, {
   createContext,
   useContext,
   FC,
+  ReactNode,
   useCallback,
   useMemo,
   useState,
@@ -29,6 +30,7 @@ const { Provider } = ToastContext;
 
 interface Props {
   value?: ToastOptions;
+  children?: ReactNode;
 }
 
 export const useToast = () => useContext(ToastContext) as ToastProviderOptions;
