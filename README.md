@@ -32,12 +32,12 @@ import { ToastProvider, useToast } from "@agney/ir-toast";
 const App: FC = () => {
   <IonApp>
     <ToastProvider>
-      // ...rest of your application 
+      // ...rest of your application
     </ToastProvider>
   </IonApp>
 }
 
-// In your component 
+// In your component
 const RegisterForm: FC () => {
   const Toast = useToast();
   // ...
@@ -62,6 +62,7 @@ const RegisterForm: FC () => {
 ```bash
 npm i @agney/ir-toast
 ```
+
 Requires react 16.8 or higher and @ionic/react 5 or higher.
 
 ## Properties
@@ -101,6 +102,7 @@ function Component: FC = () => {
   // ...
 }
 ```
+
 `Toast` returned from `useToast` supports:
 
 1. `create`
@@ -112,7 +114,7 @@ A toast instance is created, takes all the props in [docs](https://ionicframewor
 Takes one argument: message as string. Does not require `present` to be called, directly shows the toast.
 
 ```typescript
-const toast = toast.success("Success message");
+const toast = toast.success('Success message');
 ```
 
 ## 🤝 Contributing
@@ -121,7 +123,7 @@ Contributions, issues and feature requests are welcome!<br />Feel free to check 
 
 ### Development
 
-We use [`yarn` v1](https://classic.yarnpkg.com/) for development. 
+We use [`yarn` v1](https://classic.yarnpkg.com/) for development.
 
 ```sh
 yarn

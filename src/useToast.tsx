@@ -63,13 +63,12 @@ export const ToastProvider: FC<Props> = ({ value, children }) => {
   );
 
   const contextValue = useMemo(() => {
-    const translateToOptions = (color: 'success' | 'warning' | 'danger') => (
-      message: string
-    ) => {
-      const toast = create({ message, color });
-      toast.present();
-      return toast;
-    };
+    const translateToOptions =
+      (color: 'success' | 'warning' | 'danger') => (message: string) => {
+        const toast = create({ message, color });
+        toast.present();
+        return toast;
+      };
 
     return {
       create,
